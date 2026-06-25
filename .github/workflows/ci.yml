@@ -24,10 +24,12 @@ jobs:
 
       - name: Установка зависимостей
         run: |
-          # Игнорируем ошибки при установке конфликтующих пакетов
-          pip install -r requirements.txt || true
-          # Принудительно устанавливаем рабочую версию mlflow
-          pip install mlflow==2.11.3 --force-reinstall
+          # Сначала устанавливаем requirements.txt с игнорированием конфликтов
+          pip install -r requirements.txt --no-deps || true
+          # Потом устанавливаем все зависимости (pip сам разрешит что можно)
+          pip install -r requirements.txt
+          # И только в конце явно устанавливаем DVC (чтобы он точно был)
+          pip install dvc dvc-s3
 
       - name: Загрузка данных через DVC (из Cloud.ru)
         env:
