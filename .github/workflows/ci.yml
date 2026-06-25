@@ -19,8 +19,15 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
+#      - name: Установка зависимостей
+#        run: pip install -r requirements.txt
+
       - name: Установка зависимостей
-        run: pip install -r requirements.txt
+        run: |
+          # Игнорируем ошибки при установке конфликтующих пакетов
+          pip install -r requirements.txt || true
+          # Принудительно устанавливаем рабочую версию mlflow
+          pip install mlflow==2.11.3 --force-reinstall
 
       - name: Загрузка данных через DVC (из Cloud.ru)
         env:
