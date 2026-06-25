@@ -17,19 +17,15 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip'
 
-#      - name: Установка зависимостей
-#        run: pip install -r requirements.txt
+      - name: Установка DVC
+        run: |
+          pip install dvc dvc-s3
 
       - name: Установка зависимостей
         run: |
-          # Сначала устанавливаем requirements.txt с игнорированием конфликтов
           pip install -r requirements.txt --no-deps || true
-          # Потом устанавливаем все зависимости (pip сам разрешит что можно)
-          pip install -r requirements.txt
-          # И только в конце явно устанавливаем DVC (чтобы он точно был)
-          pip install dvc dvc-s3
+          pip install scikit-learn pandas pytest pandera joblib pyyaml mlflow
 
       - name: Загрузка данных через DVC (из Cloud.ru)
         env:
